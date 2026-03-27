@@ -238,9 +238,14 @@ export async function downloadSchedulePdf(input: PdfInput): Promise<void> {
   const pageHeight = pdf.internal.pageSize.getHeight()
 
   const container = document.createElement('div')
-  container.style.position = 'fixed'
-  container.style.left = '-9999px'
+  container.style.position = 'absolute'
+  container.style.left = '0'
   container.style.top = '0'
+  container.style.width = '1100px'
+  container.style.zIndex = '-9999'
+  container.style.opacity = '0'
+  container.style.pointerEvents = 'none'
+  container.style.overflow = 'hidden'
   document.body.appendChild(container)
 
   try {
@@ -249,13 +254,17 @@ export async function downloadSchedulePdf(input: PdfInput): Promise<void> {
       const html = buildScheduleHtml(input, weeks[i], weekLabel)
 
       container.innerHTML = html
-      await new Promise((r) => setTimeout(r, 100))
+      await new Promise((r) => setTimeout(r, 200))
 
-      const canvas = await html2canvas(container.firstElementChild as HTMLElement, {
+      const target = container.firstElementChild as HTMLElement
+      const canvas = await html2canvas(target, {
         scale: 2,
         useCORS: true,
         backgroundColor: '#ffffff',
         logging: false,
+        windowWidth: 1200,
+        width: target.scrollWidth,
+        height: target.scrollHeight,
       })
 
       if (i > 0) pdf.addPage()
@@ -275,7 +284,16 @@ export async function downloadSchedulePdf(input: PdfInput): Promise<void> {
     }
 
     const filename = `schedule_${format(parseISO(input.startDate), 'yyyyMMdd')}_${format(parseISO(input.endDate), 'yyyyMMdd')}.pdf`
-    pdf.save(filename)
+
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
+    if (isIOS) {
+      const blob = pdf.output('blob')
+      const url = URL.createObjectURL(blob)
+      window.open(url, '_blank')
+      setTimeout(() => URL.revokeObjectURL(url), 60000)
+    } else {
+      pdf.save(filename)
+    }
   } finally {
     document.body.removeChild(container)
   }
