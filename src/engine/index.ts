@@ -31,7 +31,6 @@ function tryGenerate(input: EngineInput): {
   warnings: Warning[]
 } {
   const allDates = generateDateRange(input.startDate, input.endDate)
-  const weeks = buildWeeks(allDates, input.storeClosedDates)
   const maxOff = getMaxOffAllowed(input.employees.length, MIN_ATTENDANCE)
   const states = initStates(input, allDates)
   const warnings: Warning[] = []

@@ -99,7 +99,7 @@ export function CalendarGrid({
             <th className="sticky left-0 z-20 bg-white border-b border-r px-2 py-2 text-left min-w-[72px] sm:min-w-[80px]">
               직원
             </th>
-            {datesToRender.map((date, idx) => {
+            {datesToRender.map((date) => {
               const globalIdx = dates.indexOf(date)
               const dow = getDay(parseISO(date))
               const isWeekend = dow === 5 || dow === 6 || dow === 0
@@ -223,7 +223,7 @@ export function CalendarGrid({
     <div>
       {/* 모바일: 주 단위 탭 */}
       <div className="flex gap-1 mb-3 lg:hidden">
-        {weeks.map((weekDates, i) => (
+        {weeks.map((_weekDates, i) => (
           <button
             key={i}
             onClick={() => setActiveWeek(i)}

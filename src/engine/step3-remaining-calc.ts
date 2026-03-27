@@ -1,9 +1,6 @@
-import type { EmployeeScheduleState, WeekInfo } from './types'
+import type { EmployeeScheduleState } from './types'
 
-export function calcRemaining(
-  states: EmployeeScheduleState[],
-  weeks: WeekInfo[],
-): void {
+export function calcRemaining(): void {
   // weeklyRemaining was initialized to baseDaysOff per week.
   // STEP 1 already subtracted fixed leaves.
   // Nothing extra to do here — remaining is already correct.

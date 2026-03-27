@@ -1,4 +1,4 @@
-import type { EmployeeScheduleState, WeekInfo } from './types'
+import type { EmployeeScheduleState } from './types'
 import type { Warning } from '@/types'
 import { getWeekIndex } from './helpers'
 
@@ -6,7 +6,6 @@ export function applyFixedLeaves(
   states: EmployeeScheduleState[],
   fixedLeaves: { employeeId: string; date: string }[],
   allDates: string[],
-  weeks: WeekInfo[],
   storeClosedDates: string[],
 ): Warning[] {
   const warnings: Warning[] = []
